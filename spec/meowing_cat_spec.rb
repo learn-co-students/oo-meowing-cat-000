@@ -1,5 +1,6 @@
 require_relative 'spec_helper'
 require_relative '../lib/meowing_cat'
+require_relative '../lib/box'
 
 describe "Cat" do
   let(:maru) {Cat.new}  # Look up what let does in RSpec
@@ -22,4 +23,32 @@ describe "Cat" do
     expect(STDOUT).to receive(:puts).with("meow!")
     maru.meow
   end
+  
+  it 'can get into boxes' do
+    maru.size = 3
+	big_box = Box.new
+	big_box.size = 3
+	expect(STDOUT).to receive(:puts).with("Meow! I'm in the box!")
+	maru.get_in_box(big_box)
+  end
+  
+  it 'cannot get into small boxes' do
+    maru.size = 3
+	small_box = Box.new
+	small_box.size = 1
+	expect(STDOUT).to receive(:puts).with("Sad meow. I'm not in the box")
+	maru.get_in_box(small_box)
+  end	
+end
+
+describe Box do
+  it 'exists' do
+    expect{Box.new}.not_to raise_error
+  end
+  
+  it 'can have size' do
+    box = Box.new
+    box.size = 2
+    expect(box.size).to eq(2)
+  end	
 end
